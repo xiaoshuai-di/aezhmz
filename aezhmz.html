@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>忆守社区 - 守护老年认知健康</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3B71CA',
+                        secondary: '#6B90DC',
+                        accent: '#F59E0B',
+                        light: '#F8FAFC',
+                        dark: '#1E293B',
+                        neutral: '#94A3B8'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        serif: ['Noto Serif SC', 'serif']
+                    },
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .text-shadow {
+                text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+            .card-shadow {
+                box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            }
+            .section-padding {
+                padding-top: clamp(3rem, 8vw, 6rem);
+                padding-bottom: clamp(3rem, 8vw, 6rem);
+            }
+            .btn-hover {
+                @apply transition-all duration-300 hover:shadow-lg hover:-translate-y-1;
+            }
+            .nav-link {
+                @apply relative px-3 py-2 text-gray-700 hover:text-primary transition-colors duration-300;
+            }
+            .nav-link::after {
+                content: '';
+                @apply absolute w-0 h-0.5 bg-primary left-0 bottom-0 transition-all duration-300;
+            }
+            .nav-link:hover::after {
+                @apply w-full;
+            }
+            .animate-fade-in {
+                animation: fadeIn 0.8s ease-in-out;
+            }
+            .animate-slide-up {
+                animation: slideUp 0.8s ease-out;
+            }
+            .animate-slide-in-left {
+                animation: slideInLeft 0.8s ease-out;
+            }
+            .animate-slide-in-right {
+                animation: slideInRight 0.8s ease-out;
+            }
+            @keyframes fadeIn {
+                from { opacity: 0; }
+                to { opacity: 1; }
+            }
+            @keyframes slideUp {
+                from { transform: translateY(30px); opacity: 0; }
+                to { transform: translateY(0); opacity: 1; }
+            }
+            @keyframes slideInLeft {
+                from { transform: translateX(-30px); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes slideInRight {
+                from { transform: translateX(30px); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+        }
+    </style>
+</head>
+<body class="font-sans text-gray-800 bg-light overflow-x-hidden">
+    <!-- 导航栏 -->
+    <header id="navbar" class="fixed w-full top-0 z-50 transition-all duration-300 bg-white/90 backdrop-blur-sm shadow-sm">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16 md:h-20">
+                <!-- 品牌logo -->
+                <a href="#" class="flex items-center space-x-2">
+                    <span class="text-primary text-2xl"><i class="fa fa-heart-o"></i></span>
+                    <span class="font-bold text-xl md:text-2xl text-dark">忆守社区</span>
+                </a>
+
+                <!-- 桌面端导航 -->
+                <nav class="hidden md:flex space-x-1">
+                    <a href="#home" class="nav-link">首页</a>
+                    <a href="#background" class="nav-link">项目背景</a>
+                    <a href="#service" class="nav-link">核心服务</a>
+                    <a href="#innovation" class="nav-link">创新亮点</a>
+                    <a href="#case" class="nav-link">试点案例</a>
+                    <a href="#team" class="nav-link">团队介绍</a>
+                    <a href="#contact" class="nav-link">联系我们</a>
+                </nav>
+
+                <!-- 移动端菜单按钮 -->
+                <button id="menuBtn" class="md:hidden text-gray-700 focus:outline-none">
+                    <i class="fa fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- 移动端导航菜单 -->
+        <div id="mobileMenu" class="md:hidden hidden bg-white border-t animate-fade-in">
+            <div class="container mx-auto px-4 py-3 space-y-2">
+                <a href="#home" class="block px-3 py-2 text-gray-700 hover:text-primary">首页</a>
+                <a href="#background" class="block px-3 py-2 text-gray-700 hover:text-primary">项目背景</a>
+                <a href="#service" class="block px-3 py-2 text-gray-700 hover:text-primary">核心服务</a>
+                <a href="#innovation" class="block px-3 py-2 text-gray-700 hover:text-primary">创新亮点</a>
+                <a href="#case" class="block px-3 py-2 text-gray-700 hover:text-primary">试点案例</a>
+                <a href="#team" class="block px-3 py-2 text-gray-700 hover:text-primary">团队介绍</a>
+                <a href="#contact" class="block px-3 py-2 text-gray-700 hover:text-primary">联系我们</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- 首页英雄区 -->
+    <section id="home" class="pt-24 md:pt-32 pb-16 md:pb-24 bg-gradient-to-b from-primary/5 to-white section-padding">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row items-center gap-10">
+                <div class="md:w-1/2 animate-slide-in-left">
+                    <h1 class="text-[clamp(2rem,5vw,3.5rem)] font-bold leading-tight text-dark mb-4">
+                        守护认知健康 <br>
+                        <span class="text-primary">让记忆不再走失</span>
+                    </h1>
+                    <p class="text-lg md:text-xl text-gray-600 mb-8 max-w-lg">
+                        忆守社区，专注老年群体认知健康的社区服务项目，让筛查走进社区，让干预跟着筛查走，用有温度的服务守护老人的美好记忆。
+                    </p>
+                    <div class="flex flex-wrap gap-4">
+                        <a href="#service" class="px-6 py-3 bg-primary text-white rounded-lg btn-hover">
+                            了解核心服务 <i class="fa fa-arrow-right ml-2"></i>
+                        </a>
+                        <a href="#contact" class="px-6 py-3 bg-white text-primary border border-primary rounded-lg btn-hover">
+                            联系我们 <i class="fa fa-phone ml-2"></i>
+                        </a>
+                    </div>
+                    <div class="mt-8 flex items-center space-x-6">
+                        <div class="flex items-center">
+                            <i class="fa fa-check-circle text-primary mr-2"></i>
+                            <span>游戏化筛查</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fa fa-check-circle text-primary mr-2"></i>
+                            <span>社区化服务</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fa fa-check-circle text-primary mr-2"></i>
+                            <span>全流程干预</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="md:w-1/2 animate-slide-in-right">
+                    <img src="https://picsum.photos/id/1005/800/600" alt="忆守社区项目宣传" class="rounded-xl shadow-2xl w-full h-auto object-cover">
+                </div>
+            </div>
+
+            <!-- 数据统计 -->
+            <div class="mt-20 grid grid-cols-2 md:grid-cols-4 gap-6">
+                <div class="bg-white rounded-lg p-6 text-center card-shadow animate-slide-up" style="animation-delay: 0.1s">
+                    <div class="text-3xl md:text-4xl font-bold text-primary mb-2">312+</div>
+                    <div class="text-gray-600">服务老人人次</div>
+                </div>
+                <div class="bg-white rounded-lg p-6 text-center card-shadow animate-slide-up" style="animation-delay: 0.2s">
+                    <div class="text-3xl md:text-4xl font-bold text-primary mb-2">3+</div>
+                    <div class="text-gray-600">合作社区</div>
+                </div>
+                <div class="bg-white rounded-lg p-6 text-center card-shadow animate-slide-up" style="animation-delay: 0.3s">
+                    <div class="text-3xl md:text-4xl font-bold text-primary mb-2">5项</div>
+                    <div class="text-gray-600">知识产权</div>
+                </div>
+                <div class="bg-white rounded-lg p-6 text-center card-shadow animate-slide-up" style="animation-delay: 0.4s">
+                    <div class="text-3xl md:text-4xl font-bold text-primary mb-2">10+</div>
+                    <div class="text-gray-600">合作医疗机构</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 项目背景 -->
+    <section id="background" class="bg-white section-padding">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-[clamp(1.8rem,4vw,2.5rem)] font-bold text-dark mb-4">项目背景</h2>
+                <p class="text-gray-600 text-lg">源于一次真实的社区走访，我们发现了老年认知健康筛查的现实困境</p>
+                <div class="w-20 h-1 bg-primary mx-auto mt-6"></div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div class="animate-slide-in-left">
+                    <img src="https://picsum.photos/id/1003/800/600" alt="社区走访" class="rounded-xl shadow-xl w-full h-auto object-cover">
+                </div>
+                <div class="animate-slide-in-right">
+                    <h3 class="text-2xl font-bold text-dark mb-4">现实困境：有恐惧、没渠道、缺支持</h3>
+                    <p class="text-gray-600 mb-6">
+                        一位70多岁的退休教师，记性越来越差却不敢跟子女提及，怀疑是阿尔茨海默症前兆，网上自测题要么太专业看不懂，要么测完也不知道该怎么办。这件事让我们意识到了老年群体认知健康筛查的迫切需求。
+                    </p>
+                    
+                    <div class="space-y-4 mb-8">
+                        <div class="flex items-start">
+                            <div class="bg-primary/10 rounded-full p-2 mr-4 mt-1">
+                                <i class="fa fa-hospital-o text-primary"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-dark">就医门槛高</h4>
+                                <p class="text-gray-600">三甲医院神经内科挂号难，腿脚不便、子女不在身边的老人难以前往</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="bg-primary/10 rounded-full p-2 mr-4 mt-1">
+                                <i class="fa fa-stethoscope text-primary"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-dark">社区筛查缺失</h4>
+                                <p class="text-gray-600">社区体检很少覆盖认知筛查项目，基层老人缺乏基础筛查渠道</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="bg-primary/10 rounded-full p-2 mr-4 mt-1">
+                                <i class="fa fa-question-circle text-primary"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-dark">自测工具不专业</h4>
+                                <p class="text-gray-600">网上自测工具缺乏专业性，测完无后续指导，无法形成有效干预</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p class="text-gray-600 italic">
+                        国家"健康中国"战略持续推进，"早筛早防"理念普及，但现有筛防技术多围绕医院场景设计，把真正需要关注的老人挡在了门外。
+                    </p>
+                </div>
+            </div>
+
+            <!-- 行业痛点 -->
+            <div class="mt-20">
+                <h3 class="text-2xl font-bold text-dark mb-8 text-center">行业三大痛点</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- 痛点1 -->
+                    <div class="bg-white rounded-xl p-8 card-shadow hover:shadow-xl transition-shadow duration-300 animate-slide-up" style="animation-delay: 0.1s">
+                        <div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-6">
+                            <i class="fa fa-hand-paper-o text-2xl text-primary"></i>
+                        </div>
+                        <h4 class="text-xl font-bold text-dark mb-4">够不着</h4>
+                        <p class="text-gray-600">
+                            专业认知评估主要依赖三甲医院，PETCT等检查价格昂贵、有创。县城乡镇老人前往省城医院折腾不起，很多老人根本不知道认知下降可通过早期干预延缓。
+                        </p>
+                    </div>
+                    <!-- 痛点2 -->
+                    <div class="bg-white rounded-xl p-8 card-shadow hover:shadow-xl transition-shadow duration-300 animate-slide-up" style="animation-delay: 0.2s">
+                        <div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-6">
+                            <i class="fa fa-ban text-2xl text-primary"></i>
+                        </div>
+                        <h4 class="text-xl font-bold text-dark mb-4">不敢查</h4>
+                        <p class="text-gray-600">
+                            传统认知筛查由医生拿着量表一问一答，老人易紧张抵触，怕被"问出来有问题"。部分老人还怕查出来给子女添麻烦，导致筛查配合度低，数据失真。
+                        </p>
+                    </div>
+                    <!-- 痛点3 -->
+                    <div class="bg-white rounded-xl p-8 card-shadow hover:shadow-xl transition-shadow duration-300 animate-slide-up" style="animation-delay: 0.3s">
+                        <div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-6">
+                            <i class="fa fa-file-text-o text-2xl text-primary"></i>
+                        </div>
+                        <h4 class="text-xl font-bold text-dark mb-4">没下文</h4>
+                        <p class="text-gray-600">
+                            筛查后缺乏后续干预服务，仅给出"高风险"提示，无具体指导。老人不知道该挂什么科、做什么检查、平时怎么注意，筛查报告最终被束之高阁。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 核心服务 -->
+    <section id="service" class="bg-gray-50 section-padding">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-[clamp(1.8rem,4vw,2.5rem)] font-bold text-dark mb-4">核心服务</h2>
+                <p class="text-gray-600 text-lg">让筛查走进社区，让干预跟着筛查走，打造全流程认知健康服务体系</p>
+                <div class="w-20 h-1 bg-primary mx-auto mt-6"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+                <!-- 服务1 -->
+                <div class="bg-white rounded-xl overflow-hidden card-shadow animate-slide-up" style="animation-delay: 0.1s">
+                    <div class="h-48 overflow-hidden">
+                        <img src="https://picsum.photos/id/1010/600/400" alt="游戏化筛查" class="w-full h-full object-cover transition-transform duration-500 hover:scale-110">
+                    </div>
+                    <div class="p-6">
+                        <div class="inline-block px-3 py-1 bg-primary/10 text-primary rounded-full text-sm mb-4">服务核心</div>
+                        <h3 class="text-xl font-bold text-dark mb-3">游戏化替代检查</h3>
+                        <p class="text-gray-600 mb-4">
+                            自主研发基于游戏化交互的线上初筛工具，将传统MMSE、MoCA量表内容游戏化改造，保留临床评估核心维度。
+                        </p>
+                        <ul class="space-y-2 text-gray-600">
+                            <li class="flex items-center"><i class="fa fa-check text-primary mr-2"></i>记忆卡片配对游戏</li>
+                            <li class="flex items-center"><i class="fa fa-check text-primary mr-2"></i>按顺序点击图形任务</li>
+                            <li class="flex items-center"><i class="fa fa-check text-primary mr-2"></i>给钟表画指针小游戏</li>
+                            <li class="flex items-center"><i class="fa fa-check text-primary mr-2"></i>帮小动物找家配对任务</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- 服务2 -->
+                <div class="bg-white rounded-xl overflow-hidden card-shadow animate-slide-up" style="animation-delay: 0.2s">
+                    <div class="h-48 overflow-hidden">
+                        <img src="https://picsum.photos/id/1025/600/400" alt="社区服务" class="w-full h-full object-cover transition-transform duration-500 hover:scale-110">
+                    </div>
+                    <div class="p-6">
+                        <div class="inline-block px-3 py-1 bg-primary/10 text-primary rounded-full text-sm mb-4">服务模式</div>
+                        <h3 class="text-xl font-bold text-dark mb-3">服务送到家门口</h3>
+                        <p class="text-gray-600 mb-4">
+                            采用"线下为主、线上为辅"的方式，团队和社区志愿者定期走进社区，举办公益筛查活动，为行动不便老人提供上门服务。
+                        </p>
+                        <ul class="space-y-2 text-gray-600">
+                            <li class="flex items-center"><i class="fa fa-check text-primary mr-2"></i>社区活动中心筛查</li>
+                            <li class="flex items-center"><i class="fa fa-check text-primary mr-2"></i>老年食堂定点服务</li>
+                            <li class="flex items-center"><i class="fa fa-check text-primary mr-2"></i>小区广场流动筛查</li>
+                            <li class="flex items-center"><i class="fa fa-check text-primary mr-2"></i>高龄老人上门服务</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- 服务3 -->
+                <div class="bg-white rounded-xl overflow-hidden card-shadow animate-slide-up" style="animation-delay: 0.3s">
+                    <div class="h-48 overflow-hidden">
+                        <img src="https://picsum.photos/id/1047/600/400" alt="全流程服务" class="w-full h-full object-cover transition-transform duration-500 hover:scale-110">
+                    </div>
+                    <div class="p-6">
+                        <div class="inline-block px-3 py-1 bg-primary/10 text-primary rounded-full text-sm mb-4">服务延伸</div>
+                        <h3 class="text-xl font-bold text-dark mb-3">筛查完服务才开始</h3>
+                        <p class="text-gray-600 mb-4">
+                            不做"一锤子买卖"，根据筛查结果分层服务，建立家庭守护中心，实现全流程、持续性的认知健康管理。
+                        </p>
+                        <ul class="space-y-2 text-gray-600">
+                            <li class="flex items-center"><i class="fa fa-check text-primary mr-2"></i>低风险：推送脑健康知识</li>
+                            <li class="flex items-center"><i class="fa fa-check text-primary mr-2"></i>中风险：认知训练+照护指导</li>
+                            <li class="flex items-center"><i class="fa fa-check text-primary mr-2"></i>高风险：绿色转诊通道</li>
+                            <li class="flex items-center"><i class="fa fa-check text-primary mr-2"></i>家属：远程查看+智能预警</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 服务流程 -->
+            <div class="bg-white rounded-xl p-8 md:p-12 card-shadow">
+                <h3 class="text-2xl font-bold text-dark mb-8 text-center">筛防护转 全流程服务闭环</h3>
+                <div class="relative">
+                    <!-- 流程线 -->
+                    <div class="hidden md:block absolute top-1/2 left-0 w-full h-1 bg-gray-200 -translate-y-1/2 z-0"></div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 relative z-10">
+                        <!-- 流程1 -->
+                        <div class="bg-primary/5 rounded-lg p-6 text-center hover:bg-primary/10 transition-colors duration-300">
+                            <div class="w-12 h-12 bg-primary text-white rounded-full flex items-center justify-center mx-auto mb-4">
+                                <span class="font-bold">1</span>
+                            </div>
+                            <h4 class="font-bold text-dark mb-2">筛</h4>
+                            <p class="text-gray-600 text-sm">
+                                线上游戏化初筛+线下社区活动，生成通俗易懂的风险评估报告，用通俗语言告知老人认知状况
+                            </p>
+                        </div>
+                        <!-- 流程2 -->
+                        <div class="bg-primary/5 rounded-lg p-6 text-center hover:bg-primary/10 transition-colors duration-300">
+                            <div class="w-12 h-12 bg-primary text-white rounded-full flex items-center justify-center mx-auto mb-4">
+                                <span class="font-bold">2</span>
+                            </div>
+                            <h4 class="font-bold text-dark mb-2">防</h4>
+                            <p class="text-gray-600 text-sm">
+                                针对中低风险人群，提供个性化认知训练、健康生活管理、情绪调节工具，动态调整训练难度
+                            </p>
+                        </div>
+                        <!-- 流程3 -->
+                        <div class="bg-primary/5 rounded-lg p-6 text-center hover:bg-primary/10 transition-colors duration-300">
+                            <div class="w-12 h-12 bg-primary text-white rounded-full flex items-center justify-center mx-auto mb-4">
+                                <span class="font-bold">3</span>
+                            </div>
+                            <h4 class="font-bold text-dark mb-2">护</h4>
+                            <p class="text-gray-600 text-sm">
+                                为家属提供居家护理赋能课程、压力疏导支持、社区互助小组，教家属如何与老人沟通
+                            </p>
+                        </div>
+                        <!-- 流程4 -->
+                        <div class="bg-primary/5 rounded-lg p-6 text-center hover:bg-primary/10 transition-colors duration-300">
+                            <div class="w-12 h-12 bg-primary text-white rounded-full flex items-center justify-center mx-auto mb-4">
+                                <span class="font-bold">4</span>
+                            </div>
+                            <h4 class="font-bold text-dark mb-2">转</h4>
+                            <p class="text-gray-600 text-sm">
+                                针对高风险人群，对接三甲医院神经内科，打通绿色转诊通道，优先安排门诊和检查
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 创新亮点 -->
+    <section id="innovation" class="bg-white section-padding">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-[clamp(1.8rem,4vw,2.5rem)] font-bold text-dark mb-4">创新亮点</h2>
+                <p class="text-gray-600 text-lg">四大创新维度，打造有温度的社区认知健康服务网络</p>
+                <div class="w-20 h-1 bg-primary mx-auto mt-6"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <!-- 创新1 -->
+                <div class="flex flex-col md:flex-row gap-6 items-center bg-gray-50 rounded-xl p-8 hover:shadow-lg transition-shadow duration-300 animate-slide-up" style="animation-delay: 0.1s">
+                    <div class="md:w-1/4 text-center">
+                        <div class="w-20 h-20 bg-primary rounded-full flex items-center justify-center mx-auto">
+                            <i class="fa fa-map-marker text-3xl text-white"></i>
+                        </div>
+                    </div>
+                    <div class="md:w-3/4">
+                        <h3 class="text-xl font-bold text-dark mb-3">服务模式创新：从坐等上门到主动下沉</h3>
+                        <p class="text-gray-600 mb-4">
+                            把专业的评估流程从医院"降维"到社区，变成志愿者、社工甚至孙辈都能协助完成的"指尖操作"。将社区志愿者作为项目重要一环，培训社区退休人员、大学生志愿者成为认知健康普及的"身边人"。
+                        </p>
+                        <p class="text-gray-600">
+                            探索"代际互动"模式，组织"大学生+老人"配对活动，让大学生志愿者定期上门陪老人做认知训练，既提供专业服务，又给予情感陪伴。
+                        </p>
+                    </div>
+                </div>
+
+                <!-- 创新2 -->
+                <div class="flex flex-col md:flex-row gap-6 items-center bg-gray-50 rounded-xl p-8 hover:shadow-lg transition-shadow duration-300 animate-slide-up" style="animation-delay: 0.2s">
+                    <div class="md:w-1/4 text-center">
+                        <div class="w-20 h-20 bg-primary rounded-full flex items-center justify-center mx-auto">
+                            <i class="fa fa-refresh text-3xl text-white"></i>
+                        </div>
+                    </div>
+                    <div class="md:w-3/4">
+                        <h3 class="text-xl font-bold text-dark mb-3">干预路径创新：筛防护转四个环节闭环</h3>
+                        <p class="text-gray-600 mb-4">
+                            打破传统筛查"筛完就完"的模式，将服务拆成筛、防、护、转四个标准化环节，确保每个用户进来，都知道下一步该做什么，形成完整的服务闭环。
+                        </p>
+                        <p class="text-gray-600">
+                            无论老人处于哪个阶段，都有对应的专业服务，不是只给一个"风险数字"就不管，实现从筛查到干预的全流程管理。
+                        </p>
+                    </div>
+                </div>
+
+                <!-- 创新3 -->
+                <div class="flex flex-col md:flex-row gap-6 items-center bg-gray-50 rounded-xl p-8 hover:shadow-lg transition-shadow duration-300 animate-slide-up" style="animation-delay: 0.3s">
+                    <div class="md:w-1/4 text-center">
+                        <div class="w-20 h-20 bg-primary rounded-full flex items-center justify-center mx-auto">
+                            <i class="fa fa-code text-3xl text-white"></i>
+                        </div>
+                    </div>
+                    <div class="md:w-3/4">
+                        <h3 class="text-xl font-bold text-dark mb-3">技术创新的落地实践</h3>
+                        <p class="text-gray-600 mb-4">
+                            以问题为导向的技术应用，开发"三阶动态风险识别算法"，自动识别和滤除测试中的无效行为数据，只保留有效操作进行分析，让单次初筛时间压缩到5-8分钟。
+                        </p>
+                        <p class="text-gray-600">
+                            已申请国家发明专利2项，获得计算机软件著作权3项。计划开发"社区智慧大屏"和"家庭健康联动端口"，让数据在社区、家庭、医院之间流动。
+                        </p>
+                    </div>
+                </div>
+
+                <!-- 创新4 -->
+                <div class="flex flex-col md:flex-row gap-6 items-center bg-gray-50 rounded-xl p-8 hover:shadow-lg transition-shadow duration-300 animate-slide-up" style="animation-delay: 0.4s">
+                    <div class="md:w-1/4 text-center">
+                        <div class="w-20 h-20 bg-primary rounded-full flex items-center justify-center mx-auto">
+                            <i class="fa fa-users text-3xl text-white"></i>
+                        </div>
+                    </div>
+                    <div class="md:w-3/4">
+                        <h3 class="text-xl font-bold text-dark mb-3">目标受众的精准定位</h3>
+                        <p class="text-gray-600 mb-4">
+                            精准定位55-70岁的"新老人"和他们的子女两大用户群体。"新老人"是使用端，他们身体尚好、有智能手机使用习惯、愿意为健康花钱；子女是支付端，处于"上有老下有小"的压力期，有强烈的照护需求。
+                        </p>
+                        <p class="text-gray-600">
+                            采用"老人愿意用、家属愿意付"的良性闭环策略：用免费筛查吸引老人，用专业服务留住家属，实现可持续的项目运营。
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 竞争分析 -->
+            <div class="mt-20 bg-white rounded-xl p-8 md:p-10 card-shadow">
+                <h3 class="text-2xl font-bold text-dark mb-8 text-center">竞争分析</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full min-w-[768px]">
+                        <thead>
+                            <tr class="bg-gray-50 text-left">
+                                <th class="p-4 border-b">竞品类型</th>
+                                <th class="p-4 border-b">代表产品</th>
+                                <th class="p-4 border-b">优势</th>
+                                <th class="p-4 border-b">劣势</th>
+                                <th class="p-4 border-b text-primary">我们的差异</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="hover:bg-gray-50">
+                                <td class="p-4 border-b">线上自测工具</td>
+                                <td class="p-4 border-b">某健康APP认知测试</td>
+                                <td class="p-4 border-b">免费、便捷</td>
+                                <td class="p-4 border-b">缺乏专业性，无后续服务</td>
+                                <td class="p-4 border-b font-medium text-primary">医学专业背书+游戏化设计+服务闭环</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="p-4 border-b">专业医疗机构</td>
+                                <td class="p-4 border-b">三甲医院认知门诊</td>
+                                <td class="p-4 border-b">权威、准确</td>
+                                <td class="p-4 border-b">门槛高、体验差、无持续性</td>
+                                <td class="p-4 border-b font-medium text-primary">前置到社区，降低门槛，提供长期陪伴</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="p-4 border-b">认知训练APP</td>
+                                <td class="p-4 border-b">某脑力训练软件</td>
+                                <td class="p-4 border-b">内容多、趣味性强</td>
+                                <td class="p-4 border-b">无筛查功能，不针对认知障碍</td>
+                                <td class="p-4 border-b font-medium text-primary">筛查+训练一体化，针对认知健康</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p class="mt-6 text-center text-gray-600 italic">
+                    我们的核心差异化在于：不只是一个工具，而是一个"有温度的社区服务网络"
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 试点案例 -->
+    <section id="case" class="bg-gray-50 section-padding">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-[clamp(1.8rem,4vw,2.5rem)] font-bold text-dark mb-4">试点案例</h2>
+                <p class="text-gray-600 text-lg">真实服务案例，见证项目价值</p>
+                <div class="w-20 h-1 bg-primary mx-auto mt-6"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- 案例1 -->
+                <div class="bg-white rounded-xl p-8 card-shadow hover:shadow-xl transition-shadow duration-300 animate-slide-up" style="animation-delay: 0.1s">
+                    <div class="flex items-center mb-6">
+                        <img src="https://picsum.photos/id/1027/100/100" alt="李阿姨" class="w-16 h-16 rounded-full object-cover mr-4">
+                        <div>
+                            <h3 class="font-bold text-dark">李阿姨 · 68岁</h3>
+                            <p class="text-gray-500 text-sm">退休工人 · 轻度记忆风险</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 mb-4">
+                        参加社区筛查时，系统提示"短期记忆方面有轻度风险"。李阿姨自述最近老忘事，刚放的东西转头就找不着。在我们推荐下参加线上认知训练，每天15分钟。
+                    </p>
+                    <div class="bg-primary/5 p-4 rounded-lg">
+                        <p class="text-gray-700 italic">
+                            "我现在每天固定时间训练，感觉脑子比以前清醒了，也不那么焦虑了。"
+                        </p>
+                    </div>
+                </div>
+
+                <!-- 案例2 -->
+                <div class="bg-white rounded-xl p-8 card-shadow hover:shadow-xl transition-shadow duration-300 animate-slide-up" style="animation-delay: 0.2s">
+                    <div class="flex items-center mb-6">
+                        <img src="https://picsum.photos/id/1012/100/100" alt="王叔叔" class="w-16 h-16 rounded-full object-cover mr-4">
+                        <div>
+                            <h3 class="font-bold text-dark">王叔叔 · 72岁</h3>
+                            <p class="text-gray-500 text-sm">退休干部 · 轻度认知障碍</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 mb-4">
+                        筛查结果显示"多项指标异常，建议进一步检查"。我们协助他通过绿色通道转诊到合作医院，最终确诊为轻度认知障碍（MCI），得到了及时的专业干预。
+                    </p>
+                    <div class="bg-primary/5 p-4 rounded-lg">
+                        <p class="text-gray-700 italic">
+                            "要不是你们这个筛查，我爸可能还要拖好几年。现在查出来是早期，医生说干预效果好，我们心里也有底了。" —— 王叔叔儿子
+                        </p>
+                    </div>
+                </div>
+
+                <!-- 案例3 -->
+                <div class="bg-white rounded-xl p-8 card-shadow hover:shadow-xl transition-shadow duration-300 animate-slide-up" style="animation-delay: 0.3s">
+                    <div class="flex items-center mb-6">
+                        <img src="https://picsum.photos/id/1014/100/100" alt="陈女士" class="w-16 h-16 rounded-full object-cover mr-4">
+                        <div>
+                            <h3 class="font-bold text-dark">陈女士 · 42岁</h3>
+                            <p class="text-gray-500 text-sm">家属 · 母亲75岁</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 mb-4">
+                        陈女士的母亲记忆力明显下降，她在朋友圈看到活动后带母亲来筛查。我们为陈女士推荐了家属照护课程，系统学习了与认知障碍老人的沟通技巧和照护方法。
+                    </p>
+                    <div class="bg-primary/5 p-4 rounded-lg">
+                        <p class="text-gray-700 italic">
+                            "原来跟老人沟通有这么多技巧，我以前总觉得是我妈故意气我，现在知道怎么应对了。"
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 社会价值 -->
+            <div class="mt-20 bg-white rounded-xl p-8 md:p-12 card-shadow">
+                <h3 class="text-2xl font-bold text-dark mb-6">项目社会价值</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+                    <div>
+                        <p class="text-gray-600 mb-6">
+                            忆守社区项目的价值，不只是"筛查"本身，而是通过筛查，让老人不再恐惧，让家属不再无助，让认知健康管理变得有温度、有路径。
+                        </p>
+                        <p class="text-gray-600 mb-6">
+                            如果我们的模式能够推广，一个中等城市（约100万人口，老年人口20万）如果能覆盖10%的老年人群，每年可以减少因认知障碍导致的走失、跌倒、意外事件数十起，节省的直接医疗成本和家庭照护成本可观。
+                        </p>
+                        <p class="text-gray-700 font-medium">
+                            更重要的是，那些早发现、早干预的老人，可以有质量地多过几年"清醒的日子"。
+                        </p>
+                    </div>
+                    <div>
+                        <canvas id="socialValueChart" width="400" height="300"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 团队介绍 -->
+    <section id="team" class="bg-white section-padding">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-[clamp(1.8rem,4vw,2.5rem)] font-bold text-dark mb-4">团队介绍</h2>
+                <p class="text-gray-600 text-lg">医工结合的专业团队，双重导师指导，兼具医学专业与技术落地能力</p>
+                <div class="w-20 h-1 bg-primary mx-auto mt-6"></div>
+            </div>
+
+            <!-- 核心团队 -->
+            <h3 class="text-xl font-bold text-dark mb-8 text-center">核心团队成员</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
+                <!-- 成员1 -->
+                <div class="bg-gray-50 rounded-xl overflow-hidden card-shadow hover:shadow-xl transition-all duration-300 animate-slide-up" style="animation-delay: 0.1s">
+                    <div class="h-64 overflow-hidden">
+                        <img src="https://picsum.photos/id/1001/400/400" alt="张XX" class="w-full h-full object-cover transition-transform duration-500 hover:scale-110">
+                    </div>
+                    <div class="p-6">
+                        <h4 class="font-bold text-dark text-lg mb-1">张XX</h4>
+                        <p class="text-primary mb-3">项目队长 · 整体统筹</p>
+                        <p class="text-gray-600 text-sm mb-4">
+                            临床医学专业，有医院实习经历，神经内科轮转时接触多位阿尔茨海默症患者，对疾病表现和家属困境有切身感受。
+                        </p>
+                        <div class="flex space-x-2">
+                            <a href="#" class="text-gray-400 hover:text-primary"><i class="fa fa-weixin"></i></a>
+                            <a href="#" class="text-gray-400 hover:text-primary"><i class="fa fa-phone"></i></a>
+                            <a href="#" class="text-gray-400 hover:text-primary"><i class="fa fa-envelope-o"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 成员2 -->
+                <div class="bg-gray-50 rounded-xl overflow-hidden card-shadow hover:shadow-xl transition-all duration-300 animate-slide-up" style="animation-delay: 0.2s">
+                    <div class="h-64 overflow-hidden">
+                        <img src="https://picsum.photos/id/1002/400/400" alt="李XX" class="w-full h-full object-cover transition-transform duration-500 hover:scale-110">
+                    </div>
+                    <div class="p-6">
+                        <h4 class="font-bold text-dark text-lg mb-1">李XX</h4>
+                        <p class="text-primary mb-3">技术负责人 · AI算法</p>
+                        <p class="text-gray-600 text-sm mb-4">
+                            临床医学专业，自学编程，大二开发校园服务小程序，日活超2000人。负责AI算法和系统开发，将医学需求转化为技术方案。
+                        </p>
+                        <div class="flex space-x-2">
+                            <a href="#" class="text-gray-400 hover:text-primary"><i class="fa fa-weixin"></i></a>
+                            <a href="#" class="text-gray-400 hover:text-primary"><i class="fa fa-phone"></i></a>
+                            <a href="#" class="text-gray-400 hover:text-primary"><i class="fa fa-envelope-o"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 成员3 -->
+                <div class="bg-gray-50 rounded-xl overflow-hidden card-shadow hover:shadow-xl transition-all duration-300 animate-slide-up" style="animation-delay: 0.3s">
+                    <div class="h-64 overflow-hidden">
+                        <img src="https://picsum.photos/id/1003/400/400" alt="王XX" class="w-full h-full object-cover transition-transform duration-500 hover:scale-110">
+                    </div>
+                    <div class="p-6">
+                        <h4 class="font-bold text-dark text-lg mb-1">王XX</h4>
+                        <p class="text-primary mb-3">运营负责人 · 社区对接</p>
+                        <p class="text-gray-600 text-sm mb-4">
+                            临床医学专业，擅长与人沟通，暑期社会实践在社区服务两个月，与社区工作人员和老年人关系密切，负责社区对接和志愿者管理。
+                        </p>
+                        <div class="flex space-x-2">
+                            <a href="#" class="text-gray-400 hover:text-primary"><i class="fa fa-weixin"></i></a>
+                            <a href="#" class="text-gray-400 hover:text-primary"><i class="fa fa-phone"></i></a>
+                            <a href="#" class="text-gray-400 hover:text-primary"><i class="fa fa-envelope-o"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 成员4 -->
+                <div class="bg-gray-50 rounded-xl overflow-hidden card-shadow hover:shadow-xl transition-all duration-300 animate-slide-up" style="animation-delay: 0.4s">
+                    <div class="h-64 overflow-hidden">
+                        <img src="https://picsum.photos/id/1004/400/400" alt="赵XX" class="w-full h-full object-cover transition-transform duration-500 hover:scale-110">
+                    </div>
+                    <div class="p-6">
+                        <h4 class="font-bold text-dark text-lg mb-1">赵XX</h4>
+                        <p class="text-primary mb-3">市场负责人 · 商业模式</p>
+                        <p class="text-gray-600 text-sm mb-4">
+                            临床医学专业，对商业模式有研究，参与过养老创业项目市场调研，对老年群体消费习惯有较深了解，负责用户调研和定价策略。
+                        </p>
+                        <div class="flex space-x-2">
+                            <a href="#" class="text-gray-400 hover:text-primary"><i class="fa fa-weixin"></i></a>
+                            <a href="#" class="text-gray-400 hover:text-primary"><i class="fa fa-phone"></i></a>
+                            <a href="#" class="text-gray-400 hover:text-primary"><i class="fa fa-envelope-o"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 指导老师 -->
+            <h3 class="text-xl font-bold text-dark mb-8 text-center">专业指导老师</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- 老师1 -->
+                <div class="bg-gray-50 rounded-xl p-8 flex items-center gap-6 card-shadow hover:shadow-xl transition-shadow duration-300 animate-slide-up" style="animation-delay: 0.1s">
+                    <img src="https://picsum.photos/id/1006/200/200" alt="何老师" class="w-24 h-24 rounded-full object-cover flex-shrink-0">
+                    <div>
+                        <h4 class="font-bold text-dark text-lg mb-1">何老师</h4>
+                        <p class="text-primary mb-3">神经内科副主任医师</p>
+                        <p class="text-gray-600">
+                            从事阿尔茨海默症临床诊疗十余年，帮团队把关医学专业性，确保筛查工具和干预方案有科学依据，为项目提供专业的医学指导。
+                        </p>
+                    </div>
+                </div>
+
+                <!-- 老师2 -->
+                <div class="bg-gray-50 rounded-xl p-8 flex items-center gap-6 card-shadow hover:shadow-xl transition-shadow duration-300 animate-slide-up" style="animation-delay: 0.2s">
+                    <img src="https://picsum.photos/id/1008/200/200" alt="杜老师" class="w-24 h-24 rounded-full object-cover flex-shrink-0">
+                    <div>
+                        <h4 class="font-bold text-dark text-lg mb-1">杜老师</h4>
+                        <p class="text-primary mb-3">创新创业学院导师</p>
+                        <p class="text-gray-600">
+                            指导过多个"互联网+"、"三创赛"获奖项目，帮团队打磨商业模式和路演技巧，为项目的商业落地和可持续发展提供专业指导。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 联系我们 -->
+    <section id="contact" class="bg-gray-50 section-padding">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-[clamp(1.8rem,4vw,2.5rem)] font-bold text-dark mb-4">联系我们</h2>
+                <p class="text-gray-600 text-lg">携手合作，共同守护老年认知健康</p>
+                <div class="w-20 h-1 bg-primary mx-auto mt-6"></div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <div class="bg-white rounded-xl p-8 md:p-10 card-shadow animate-slide-in-left">
+                    <h3 class="text-xl font-bold text-dark mb-6">合作咨询</h3>
+                    <form class="space-y-6">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            <div>
+                                <label for="name" class="block text-gray-700 mb-2">姓名</label>
+                                <input type="text" id="name" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary" placeholder="请输入您的姓名">
+                            </div>
+                            <div>
+                                <label for="phone" class="block text-gray-700 mb-2">电话</label>
+                                <input type="tel" id="phone" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary" placeholder="请输入您的电话">
+                            </div>
+                        </div>
+                        <div>
+                            <label for="organization" class="block text-gray-700 mb-2">单位/社区</label>
+                            <input type="text" id="organization" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary" placeholder="请输入单位/社区名称">
+                        </div>
+                        <div>
+                            <label for="type" class="block text-gray-700 mb-2">合作类型</label>
+                            <select id="type" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary">
+                                <option value="">请选择合作类型</option>
+                                <option value="community">社区合作</option>
+                                <option value="hospital">医疗机构合作</option>
+                                <option value="volunteer">志愿者合作</option>
+                                <option value="other">其他合作</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="message" class="block text-gray-700 mb-2">咨询内容</label>
+                            <textarea id="message" rows="4" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary" placeholder="请输入您的咨询内容"></textarea>
+                        </div>
+                        <button type="submit" class="w-full px-6 py-3 bg-primary text-white rounded-lg btn-hover">
+                            提交咨询 <i class="fa fa-paper-plane ml-2"></i>
+                        </button>
+                    </form>
+                </div>
+
+                <div class="animate-slide-in-right">
+                    <div class="bg-white rounded-xl p-8 md:p-10 card-shadow mb-8">
+                        <h3 class="text-xl font-bold text-dark mb-6">联系方式</h3>
+                        <div class="space-y-6">
+                            <div class="flex items-start">
+                                <div class="bg-primary/10 rounded-full p-3 mr-4 mt-1">
+                                    <i class="fa fa-phone text-primary"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-dark">联系电话</h4>
+                                    <p class="text-gray-600">138-XXXX-XXXX</p>
+                                    <p class="text-gray-500 text-sm">工作时间：9:00-18:00</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <div class="bg-primary/10 rounded-full p-3 mr-4 mt-1">
+                                    <i class="fa fa-envelope-o text-primary"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-dark">电子邮箱</h4>
+                                    <p class="text-gray-600">yishoucommunity@163.com</p>
+                                    <p class="text-gray-500 text-sm">24小时内回复</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <div class="bg-primary/10 rounded-full p-3 mr-4 mt-1">
+                                    <i class="fa fa-weixin text-primary"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-dark">微信公众号</h4>
+                                    <p class="text-gray-600">忆守社区</p>
+                                    <p class="text-gray-500 text-sm">扫码关注，获取更多资讯</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <div class="bg-primary/10 rounded-full p-3 mr-4 mt-1">
+                                    <i class="fa fa-map-marker text-primary"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-dark">项目地址</h4>
+                                    <p class="text-gray-600">XX市XX区XX路XX号XX大学创新创业中心</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl p-8 md:p-10 card-shadow">
+                        <h3 class="text-xl font-bold text-dark mb-6">合作须知</h3>
+                        <ul class="space-y-3 text-gray-600">
+                            <li class="flex items-start">
+                                <i class="fa fa-info-circle text-primary mr-3 mt-1"></i>
+                                <span>社区合作可提供免费的认知筛查服务，专业的干预指导和志愿者培训</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fa fa-info-circle text-primary mr-3 mt-1"></i>
+                                <span>医疗机构合作可共建绿色转诊通道，实现筛查-诊断-干预的无缝衔接</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fa fa-info-circle text-primary mr-3 mt-1"></i>
+                                <span>志愿者可参与社区筛查、上门服务、认知训练等工作，我们提供专业培训</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fa fa-info-circle text-primary mr-3 mt-1"></i>
+                                <span>所有合作均基于公益初心，旨在为更多老人提供专业的认知健康服务</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 底部 -->
+    <footer class="bg-dark text-white py-12">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <div class="flex items-center space-x-2 mb-4">
+                        <span class="text-primary text-2xl"><i class="fa fa-heart-o"></i></span>
+                        <span class="font-bold text-xl">忆守社区</span>
+                    </div>
+                    <p class="text-gray-400 mb-4">
+                        专注老年群体认知健康的社区服务项目，让筛查走进社区，让干预跟着筛查走。
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-primary transition-colors"><i class="fa fa-weixin text-xl"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-primary transition-colors"><i class="fa fa-weibo text-xl"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-primary transition-colors"><i class="fa fa-qq text-xl"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-primary transition-colors"><i class="fa fa-envelope-o text-xl"></i></a>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="font-bold text-lg mb-4">项目导航</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#home" class="text-gray-400 hover:text-primary transition-colors">首页</a></li>
+                        <li><a href="#background" class="text-gray-400 hover:text-primary transition-colors">项目背景</a></li>
+                        <li><a href="#service" class="text-gray-400 hover:text-primary transition-colors">核心服务</a></li>
+                        <li><a href="#innovation" class="text-gray-400 hover:text-primary transition-colors">创新亮点</a></li>
+                        <li><a href="#case" class="text-gray-400 hover:text-primary transition-colors">试点案例</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold text-lg mb-4">关于我们</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#team" class="text-gray-400 hover:text-primary transition-colors">团队介绍</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">项目动态</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">媒体报道</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">加入我们</a></li>
+                        <li><a href="#contact" class="text-gray-400 hover:text-primary transition-colors">联系我们</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold text-lg mb-4">认知健康知识</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">阿尔茨海默症科普</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">认知训练方法</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">家庭照护指南</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">常见问题解答</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">健康资讯</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-500 text-sm mb-4 md:mb-0">
+                    © 2025 忆守社区 版权所有 | 专注老年认知健康服务
+                </p>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-500 text-sm hover:text-gray-400">隐私政策</a>
+                    <a href="#" class="text-gray-500 text-sm hover:text-gray-400">服务条款</a>
+                    <a href="#" class="text-gray-500 text-sm hover:text-gray-400">免责声明</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 回到顶部按钮 -->
+    <button id="backToTop" class="fixed bottom-8 right-8 bg-primary text-white w-12 h-12 rounded-full flex items-center justify-center shadow-lg opacity-0 invisible transition-all duration-300 hover:bg-secondary">
+        <i class="fa fa-arrow-up"></i>
+    </button>
+
+    <!-- JavaScript -->
+    <script>
+        // 导航栏滚动效果
+        const navbar = document.getElementById('navbar');
+        const backToTop = document.getElementById('backToTop');
+        
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 50) {
+                navbar.classList.add('shadow-md');
+                navbar.classList.remove('bg-white/90');
+                navbar.classList.add('bg-white');
+                
+                backToTop.classList.remove('opacity-0', 'invisible');
+                backToTop.classList.add('opacity-100', 'visible');
+            } else {
+                navbar.classList.remove('shadow-md');
+                navbar.classList.add('bg-white/90');
+                navbar.classList.remove('bg-white');
+                
+                backToTop.classList.add('opacity-0', 'invisible');
+                backToTop.classList.remove('opacity-100', 'visible');
+            }
+        });
+
+        // 移动端菜单
+        const menuBtn = document.getElementById('menuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        
+        menuBtn.addEventListener('click', function() {
+            mobileMenu.classList.toggle('hidden');
+            const icon = menuBtn.querySelector('i');
+            if (icon.classList.contains('fa-bars')) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+            } else {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            }
+        });
+
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                // 关闭移动端菜单
+                if (!mobileMenu.classList.contains('hidden')) {
+                    mobileMenu.classList.add('hidden');
+                    const icon = menuBtn.querySelector('i');
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                }
+                
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // 回到顶部
+        backToTop.addEventListener('click', function() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        // 社会价值图表
+        const ctx = document.getElementById('socialValueChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['减少意外事件', '节省医疗成本', '节省照护成本', '提升生活质量', '减轻家庭负担'],
+                datasets: [{
+                    label: '项目社会价值量化',
+                    data: [85, 78, 92, 95, 88],
+                    backgroundColor: [
+                        'rgba(59, 113, 202, 0.7)',
+                        'rgba(59, 113, 202, 0.7)',
+                        'rgba(59, 113, 202, 0.7)',
+                        'rgba(59, 113, 202, 0.7)',
+                        'rgba(59, 113, 202, 0.7)'
+                    ],
+                    borderColor: [
+                        'rgba(59, 113, 202, 1)',
+                        'rgba(59, 113, 202, 1)',
+                        'rgba(59, 113, 202, 1)',
+                        'rgba(59, 113, 202, 1)',
+                        'rgba(59, 113, 202, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100,
+                        title: {
+                            display: true,
+                            text: '改善程度 (%)'
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                }
+            }
+        });
+
+        // 滚动动画
+        const observerOptions = {
+            threshold: 0.1,
+            root
